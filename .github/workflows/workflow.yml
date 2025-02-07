@@ -10,14 +10,30 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
+
       - name: Install gotestsum and Run Tests
         run: |
-          sudo apt-get update && sudo apt-get install -y gotestsum
-          mkdir -p test-results && \
+          go install gotest.tools/gotestsum@latest
+          export PATH=$PATH:$(go env GOPATH)/bin
+          mkdir -p test-results
           gotestsum --junitfile test-results/test-report.xml
-          
+
       - name: Upload Test Results
+        id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: test-results
+
+      - name: Download Test Results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: downloaded-test-results
+
+      - name: Print Test Results XML
+        run: cat downloaded-test-results/test-report.xml
