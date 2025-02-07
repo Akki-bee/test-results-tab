@@ -25,9 +25,9 @@ jobs:
       - name: Print Test Results XML
         run: cat test-results/test-report.xml
 
-      - name: Publish Test Results to CloudBees
-        uses: cloudbees-io/publish-test-results@v1
-        with:
-          test-type: go
-          path: test-results/test-report.xml
+      # - name: Publish Test Results to CloudBees
+      #   uses: cloudbees-io/publish-test-results@v1
+      #   with:
+      #     test-type: go
+      #     path: test-results/test-report.xml
 
