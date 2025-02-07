@@ -10,16 +10,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 1.21  # Use latest Go version
-
-      - name: Run Tests
+      - name: Install gotestsum and Run Tests
         run: |
-          mkdir -p test-results
-          go test ./... -json > test-results/test-report.json
-
+          go install gotest.tools/gotestsum@latest && \
+          mkdir -p test-results && \
+          gotestsum --junitfile test-results/test-report.xml
+          
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
