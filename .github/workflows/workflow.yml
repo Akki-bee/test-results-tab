@@ -22,18 +22,12 @@ jobs:
           mkdir -p test-results
           gotestsum --junitfile test-results/test-report.xml
 
-      # - name: Upload Test Results
-      #   id: upload-artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-results
-      #     path: test-results
-
-      # - name: Download Test Results
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: test-results
-      #     path: downloaded-test-results
-
       - name: Print Test Results XML
         run: cat test-results/test-report.xml
+
+      - name: Publish Test Results to CloudBees
+        uses: cloudbees-io/publish-test-results@v1
+        with:
+          test-type: go
+          path: test-results/test-report.xml
+
